@@ -1,9 +1,1196 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brewed & Co. — Artisan Café</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F2EA;
+    --warm-white: #FDFAF5;
+    --espresso: #2C1A0E;
+    --mocha: #5C3D2E;
+    --caramel: #C8832A;
+    --gold: #D4A843;
+    --dusty-rose: #C4846A;
+    --sage: #7A8C6E;
+    --light-sage: #EEF2EA;
+    --border: rgba(44,26,14,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--espresso);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(253,250,245,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--espresso);
+    letter-spacing: 0.02em;
+    cursor: pointer;
+  }
+
+  .nav-logo span { color: var(--caramel); font-style: italic; }
+
+  .nav-links {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+  }
+
+  .nav-links li a {
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--mocha);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .nav-links li a:hover,
+  .nav-links li a.active {
+    background: var(--espresso);
+    color: var(--cream);
+  }
+
+  /* PAGES */
+  .page {
+    display: none;
+    min-height: 100vh;
+    padding-top: 64px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .page.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── HOME ── */
+  .hero {
+    min-height: calc(100vh - 64px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+
+  .hero-left {
+    padding: 5rem 3rem 5rem 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--caramel);
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 4vw, 4.2rem);
+    line-height: 1.08;
+    color: var(--espresso);
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--caramel);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--mocha);
+    max-width: 420px;
+    font-weight: 300;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--espresso);
+    color: var(--cream);
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 3rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-primary:hover { background: var(--mocha); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--espresso);
+    border: 1.5px solid var(--espresso);
+    padding: 0.75rem 2rem;
+    border-radius: 3rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover { background: var(--espresso); color: var(--cream); }
+
+  .hero-right {
+    height: calc(100vh - 64px);
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-illustration {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 3rem;
+  }
+
+  .coffee-visual {
+    width: 240px;
+    height: 240px;
+    background: var(--espresso);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .coffee-visual::before {
+    content: '';
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    background: var(--mocha);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+  }
+
+  .coffee-visual::after {
+    content: '';
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: var(--caramel);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tag {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--mocha);
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+  }
+
+  .home-features {
+    padding: 5rem;
+    background: var(--espresso);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+
+  .feature-item { color: var(--cream); }
+
+  .feature-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--caramel);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(247,242,234,0.6);
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-desc { font-size: 0.95rem; line-height: 1.6; color: rgba(247,242,234,0.8); font-weight: 300; }
+
+  /* ── PROMOS ── */
+  .page-header {
+    padding: 4rem 5rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--caramel);
+    margin-bottom: 0.75rem;
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 1.1;
+    color: var(--espresso);
+  }
+
+  .page-sub {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    color: var(--mocha);
+    font-weight: 300;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+
+  .promos-grid {
+    padding: 3rem 5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .promo-card {
+    border-radius: 1.5rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform 0.3s;
+  }
+
+  .promo-card:hover { transform: translateY(-4px); }
+
+  .promo-card-top {
+    height: 180px;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .promo-card:nth-child(1) .promo-card-top { background: var(--espresso); }
+  .promo-card:nth-child(2) .promo-card-top { background: var(--mocha); }
+  .promo-card:nth-child(3) .promo-card-top { background: var(--caramel); }
+  .promo-card:nth-child(4) .promo-card-top { background: var(--dusty-rose); }
+  .promo-card:nth-child(5) .promo-card-top { background: var(--sage); }
+  .promo-card:nth-child(6) .promo-card-top { background: #3E2723; }
+
+  .promo-badge {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.75rem;
+    border-radius: 2rem;
+    position: absolute;
+    top: 1.25rem; left: 1.25rem;
+  }
+
+  .promo-discount {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: white;
+    line-height: 1;
+  }
+
+  .promo-card-body {
+    padding: 1.25rem 1.5rem;
+    background: white;
+  }
+
+  .promo-name {
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--espresso);
+    margin-bottom: 0.4rem;
+  }
+
+  .promo-desc {
+    font-size: 0.85rem;
+    color: var(--mocha);
+    line-height: 1.5;
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+
+  .promo-validity {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--caramel);
+  }
+
+  /* ── ABOUT ── */
+  .about-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 60vh;
+  }
+
+  .about-left {
+    padding: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .about-right {
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+  }
+
+  .about-circle-graphic {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: var(--espresso);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-circle-graphic::before {
+    content: 'est. 2018';
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--caramel);
+    font-size: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .about-circle-ring {
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+  }
+
+  .about-text { font-size: 1rem; line-height: 1.8; color: var(--mocha); font-weight: 300; }
+
+  .about-values {
+    padding: 4rem 5rem;
+    background: var(--light-sage);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .value-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .value-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--sage);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+  }
+
+  .value-name { font-weight: 500; font-size: 0.95rem; color: var(--espresso); }
+  .value-desc { font-size: 0.85rem; color: var(--mocha); line-height: 1.6; font-weight: 300; }
+
+  .team-section { padding: 4rem 5rem; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: var(--espresso);
+  }
+
+  .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+  .team-card {
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+    transition: background 0.2s;
+  }
+
+  .team-card:hover { background: var(--cream); }
+
+  .team-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  .team-card:nth-child(1) .team-avatar { background: var(--espresso); }
+  .team-card:nth-child(2) .team-avatar { background: var(--mocha); }
+  .team-card:nth-child(3) .team-avatar { background: var(--caramel); }
+
+  .team-name { font-weight: 500; font-size: 1rem; color: var(--espresso); }
+  .team-role { font-size: 0.8rem; color: var(--caramel); text-transform: uppercase; letter-spacing: 0.1em; }
+  .team-bio { font-size: 0.85rem; color: var(--mocha); line-height: 1.6; font-weight: 300; }
+
+  /* ── CONTACT ── */
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 64px);
+  }
+
+  .contact-left {
+    padding: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    border-right: 1px solid var(--border);
+  }
+
+  .contact-right {
+    background: var(--cream);
+    padding: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .contact-info-item { display: flex; flex-direction: column; gap: 0.3rem; }
+  .contact-label { font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.15em; color: var(--caramel); }
+  .contact-value { font-size: 1rem; color: var(--espresso); line-height: 1.5; }
+
+  .form-field { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-label { font-size: 0.8rem; font-weight: 500; color: var(--mocha); }
+
+  .form-input, .form-textarea {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 0.8rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--espresso);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .form-input:focus, .form-textarea:focus { border-color: var(--caramel); }
+  .form-textarea { resize: vertical; min-height: 120px; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .hours-table { width: 100%; border-collapse: collapse; }
+  .hours-table td { padding: 0.5rem 0; font-size: 0.9rem; border-bottom: 1px solid var(--border); }
+  .hours-table td:last-child { text-align: right; color: var(--mocha); font-weight: 300; }
+  .hours-table tr:last-child td { border-bottom: none; }
+
+  /* ── MENU ── */
+  .menu-tabs {
+    padding: 2rem 5rem 0;
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .menu-tab {
+    padding: 0.6rem 1.5rem;
+    border-radius: 2rem 2rem 0 0;
+    background: none;
+    border: 1px solid transparent;
+    border-bottom: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: var(--mocha);
+    transition: all 0.2s;
+    position: relative;
+    top: 1px;
+  }
+
+  .menu-tab.active {
+    background: var(--warm-white);
+    border-color: var(--border);
+    color: var(--espresso);
+    font-weight: 500;
+  }
+
+  .menu-section { display: none; padding: 3rem 5rem; }
+  .menu-section.active { display: block; }
+
+  .menu-category {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--caramel);
+    margin-bottom: 1.25rem;
+    margin-top: 2.5rem;
+  }
+
+  .menu-category:first-child { margin-top: 0; }
+
+  .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; }
+
+  .menu-item {
+    padding: 1.25rem 1.5rem;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: background 0.15s;
+  }
+
+  .menu-item:hover { background: var(--cream); }
+
+  .menu-item-info { display: flex; flex-direction: column; gap: 0.2rem; }
+  .menu-item-name { font-weight: 500; font-size: 0.95rem; color: var(--espresso); }
+  .menu-item-desc { font-size: 0.8rem; color: var(--mocha); font-weight: 300; line-height: 1.4; }
+  .menu-item-tag {
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em;
+    background: var(--light-sage); color: var(--sage);
+    padding: 0.2rem 0.5rem; border-radius: 2rem; display: inline-block; margin-top: 0.3rem;
+  }
+  .menu-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--caramel);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* footer */
+  footer {
+    background: var(--espresso);
+    color: var(--cream);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+    font-weight: 300;
+    opacity: 0.9;
+  }
+
+  footer span { color: var(--caramel); }
+</style>
+</head>
 <body>
 
-<h1>Hello 👋</h1>
-<p>Your website is working!</p>
+<nav>
+  <div class="nav-logo">Brewed <span>&</span> Co.</div>
+  <ul class="nav-links">
+    <li><a href="#" class="active" onclick="showPage('home',this)">Home</a></li>
+    <li><a href="#" onclick="showPage('promos',this)">Promos</a></li>
+    <li><a href="#" onclick="showPage('about',this)">About</a></li>
+    <li><a href="#" onclick="showPage('contact',this)">Contact Us</a></li>
+    <li><a href="#" onclick="showPage('menu',this)">Menu</a></li>
+  </ul>
+</nav>
 
+<!-- ══ HOME ══ -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Artisan Coffee · Pasay City</p>
+      <h1 class="hero-title">Life is too short for <em>bad coffee.</em></h1>
+      <p class="hero-sub">We craft every cup with intention — sourced from single-origin farms, roasted in-house, and served with care in a space that feels like home.</p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="showPage('menu', document.querySelector('.nav-links a:nth-child(5)'))">Explore Menu</button>
+        <button class="btn-outline" onclick="showPage('promos', document.querySelector('.nav-links a'))">See Promos</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-illustration">
+        <div class="coffee-visual"></div>
+        <div class="hero-tags">
+          <span class="tag">Single Origin</span>
+          <span class="tag">House-Roasted</span>
+          <span class="tag">Fresh Pastries</span>
+          <span class="tag">Cozy Vibes</span>
+          <span class="tag">Free Wi-Fi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="home-features">
+    <div class="feature-item">
+      <div class="feature-num">5+</div>
+      <div class="feature-label">Years Brewing</div>
+      <div class="feature-desc">Open since 2018, we've been perfecting our craft one cup at a time in the heart of Pasay.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-num">30+</div>
+      <div class="feature-label">Menu Items</div>
+      <div class="feature-desc">From pour-over to matcha lattes, light bites to hearty sandwiches — something for everyone.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-num">100%</div>
+      <div class="feature-label">Ethically Sourced</div>
+      <div class="feature-desc">Our beans travel from Benguet to Sagada — supporting Filipino farmers at every step.</div>
+    </div>
+  </div>
+  <footer>© 2024 Brewed <span>&</span> Co. · Pasay City, Metro Manila</footer>
+</div>
+
+<!-- ══ PROMOS ══ -->
+<div id="page-promos" class="page">
+  <div class="page-header">
+    <p class="page-eyebrow">Current Offers</p>
+    <h2 class="page-title">Deals worth waking up for.</h2>
+    <p class="page-sub">Our rotating promos are updated every month. Show this page at the counter to redeem.</p>
+  </div>
+  <div class="promos-grid">
+    <div class="promo-card">
+      <div class="promo-card-top">
+        <span class="promo-badge">Daily Deal</span>
+        <div class="promo-discount">Buy 1<br>Get 1</div>
+      </div>
+      <div class="promo-card-body">
+        <div class="promo-name">Happy Hour</div>
+        <div class="promo-desc">All espresso drinks, buy-one-get-one free. Share with a friend or keep both — no judgment.</div>
+        <div class="promo-validity">Every day · 2PM – 4PM</div>
+      </div>
+    </div>
+    <div class="promo-card">
+      <div class="promo-card-top">
+        <span class="promo-badge">Student Promo</span>
+        <div class="promo-discount">20%<br>Off</div>
+      </div>
+      <div class="promo-card-body">
+        <div class="promo-name">Study Sesh Discount</div>
+        <div class="promo-desc">Present a valid student ID and get 20% off your entire order. Free refills on drip coffee too.</div>
+        <div class="promo-validity">Mon – Fri · All day</div>
+      </div>
+    </div>
+    <div class="promo-card">
+      <div class="promo-card-top">
+        <span class="promo-badge">Loyalty</span>
+        <div class="promo-discount">Free<br>Drink</div>
+      </div>
+      <div class="promo-card-body">
+        <div class="promo-name">Stamp Card Reward</div>
+        <div class="promo-desc">Collect 10 stamps and redeem a free drink of your choice — any size, any type.</div>
+        <div class="promo-validity">Ongoing · No expiry</div>
+      </div>
+    </div>
+    <div class="promo-card">
+      <div class="promo-card-top">
+        <span class="promo-badge">Weekend Only</span>
+        <div class="promo-discount">Brunch<br>Set</div>
+      </div>
+      <div class="promo-card-body">
+        <div class="promo-name">Weekend Brunch Bundle</div>
+        <div class="promo-desc">Any sandwich or toast + any coffee drink for only ₱299. Saturday and Sunday mornings only.</div>
+        <div class="promo-validity">Sat & Sun · 8AM – 12PM</div>
+      </div>
+    </div>
+    <div class="promo-card">
+      <div class="promo-card-top">
+        <span class="promo-badge">Birthday Month</span>
+        <div class="promo-discount">Free<br>Cake</div>
+      </div>
+      <div class="promo-card-body">
+        <div class="promo-name">Birthday Treat</div>
+        <div class="promo-desc">Celebrating this month? Show us your ID and get a free slice of our signature café cake.</div>
+        <div class="promo-validity">All month · One-time use</div>
+      </div>
+    </div>
+    <div class="promo-card">
+      <div class="promo-card-top">
+        <span class="promo-badge">Eco Reward</span>
+        <div class="promo-discount">₱20<br>Off</div>
+      </div>
+      <div class="promo-card-body">
+        <div class="promo-name">Bring Your Own Cup</div>
+        <div class="promo-desc">Bring your own tumbler or cup and save ₱20 on every drink. Good for the planet, good for your wallet.</div>
+        <div class="promo-validity">Everyday · Any drink</div>
+      </div>
+    </div>
+  </div>
+  <footer>© 2024 Brewed <span>&</span> Co. · Pasay City, Metro Manila</footer>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<div id="page-about" class="page">
+  <div class="about-hero">
+    <div class="about-left">
+      <p class="page-eyebrow">Our Story</p>
+      <h2 class="page-title" style="font-family:'Playfair Display',serif;font-size:clamp(2rem,3vw,3rem);color:var(--espresso);">More than coffee.<br><em style="font-style:italic;color:var(--caramel)">It's a ritual.</em></h2>
+      <p class="about-text">Brewed & Co. started as a simple dream: a neighborhood café where people could slow down. We opened our doors in 2018 with a small menu, a used espresso machine, and a deep love for good coffee.</p>
+      <p class="about-text">Today we source directly from farmers in the Cordillera highlands, roast in small batches twice a week, and obsess over water temperature and grind size so you don't have to. You just enjoy the cup.</p>
+    </div>
+    <div class="about-right">
+      <div style="position:relative">
+        <div class="about-circle-graphic"></div>
+        <div class="about-circle-ring"></div>
+      </div>
+    </div>
+  </div>
+  <div class="about-values">
+    <div class="value-item">
+      <div class="value-icon">🌱</div>
+      <div class="value-name">Sustainability</div>
+      <div class="value-desc">Compostable packaging, minimal waste, and a commitment to eco-conscious operations.</div>
+    </div>
+    <div class="value-item">
+      <div class="value-icon">🤝</div>
+      <div class="value-name">Community</div>
+      <div class="value-desc">We partner with local artists, host open mics, and give back to the neighborhoods we call home.</div>
+    </div>
+    <div class="value-item">
+      <div class="value-icon">☕</div>
+      <div class="value-name">Craft</div>
+      <div class="value-desc">Every cup is dialed in with precision — from extraction time to milk temperature.</div>
+    </div>
+    <div class="value-item">
+      <div class="value-icon">💛</div>
+      <div class="value-name">Warmth</div>
+      <div class="value-desc">We remember your name and your order. We're your third place — between work and home.</div>
+    </div>
+  </div>
+  <div class="team-section">
+    <h3 class="section-title">Meet the Team</h3>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">M</div>
+        <div class="team-name">Mara Santos</div>
+        <div class="team-role">Founder & Head Barista</div>
+        <div class="team-bio">Trained in Melbourne and Manila, Mara has been obsessing over espresso extraction since 2012. She's the heart of everything we do.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">J</div>
+        <div class="team-name">Jun Dela Cruz</div>
+        <div class="team-role">Head of Roasting</div>
+        <div class="team-bio">Jun travels to Benguet every season to source our beans directly from farming families he's known for over a decade.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">A</div>
+        <div class="team-name">Ana Reyes</div>
+        <div class="team-role">Pastry Chef</div>
+        <div class="team-bio">Ana's croissants have a cult following. She bakes fresh every morning before sunrise — by 10AM, the best ones are usually gone.</div>
+      </div>
+    </div>
+  </div>
+  <footer>© 2024 Brewed <span>&</span> Co. · Pasay City, Metro Manila</footer>
+</div>
+
+<!-- ══ CONTACT ══ -->
+<div id="page-contact" class="page">
+  <div class="contact-layout">
+    <div class="contact-left">
+      <div>
+        <p class="page-eyebrow">Get in Touch</p>
+        <h2 class="page-title" style="font-family:'Playfair Display',serif;font-size:clamp(2rem,3vw,3rem);color:var(--espresso);margin-top:0.5rem">We'd love to<br><em style="font-style:italic;color:var(--caramel)">hear from you.</em></h2>
+      </div>
+      <div class="contact-info-item">
+        <span class="contact-label">Location</span>
+        <span class="contact-value">123 Adriatico Street,<br>Malate, Pasay City,<br>Metro Manila 1300</span>
+      </div>
+      <div class="contact-info-item">
+        <span class="contact-label">Phone</span>
+        <span class="contact-value">+63 (2) 8123 4567</span>
+      </div>
+      <div class="contact-info-item">
+        <span class="contact-label">Email</span>
+        <span class="contact-value">hello@brewedandco.ph</span>
+      </div>
+      <div class="contact-info-item">
+        <span class="contact-label">Operating Hours</span>
+        <table class="hours-table">
+          <tr><td>Monday – Friday</td><td>7:00 AM – 9:00 PM</td></tr>
+          <tr><td>Saturday</td><td>7:00 AM – 10:00 PM</td></tr>
+          <tr><td>Sunday</td><td>8:00 AM – 8:00 PM</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="contact-right">
+      <p class="section-title" style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:0.5rem">Send us a message</p>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">First Name</label>
+          <input class="form-input" type="text" placeholder="Maria">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Last Name</label>
+          <input class="form-input" type="text" placeholder="Cruz">
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" placeholder="maria@email.com">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Subject</label>
+        <input class="form-input" type="text" placeholder="Reservation, feedback, collaboration…">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Message</label>
+        <textarea class="form-textarea" placeholder="Tell us what's on your mind..."></textarea>
+      </div>
+      <button class="btn-primary" style="align-self:flex-start;padding:0.85rem 2.5rem" onclick="alert('Message sent! We\'ll get back to you within 24 hours ☕')">Send Message</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MENU ══ -->
+<div id="page-menu" class="page">
+  <div class="page-header">
+    <p class="page-eyebrow">Our Offerings</p>
+    <h2 class="page-title">The Menu</h2>
+    <p class="page-sub">All drinks available hot, iced, or blended. Prices inclusive of VAT.</p>
+  </div>
+  <div class="menu-tabs">
+    <button class="menu-tab active" onclick="showTab('coffee',this)">Coffee</button>
+    <button class="menu-tab" onclick="showTab('nonCoffee',this)">Non-Coffee</button>
+    <button class="menu-tab" onclick="showTab('food',this)">Food</button>
+    <button class="menu-tab" onclick="showTab('pastries',this)">Pastries</button>
+  </div>
+
+  <!-- COFFEE -->
+  <div id="tab-coffee" class="menu-section active">
+    <p class="menu-category">Espresso Classics</p>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Espresso</div>
+          <div class="menu-item-desc">Single or double shot, house blend</div>
+        </div>
+        <div class="menu-price">₱95</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Americano</div>
+          <div class="menu-item-desc">Espresso diluted with hot water</div>
+        </div>
+        <div class="menu-price">₱130</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Cappuccino</div>
+          <div class="menu-item-desc">Equal parts espresso, milk, and foam</div>
+        </div>
+        <div class="menu-price">₱155</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Flat White</div>
+          <div class="menu-item-desc">Ristretto shots with velvety microfoam</div>
+          <span class="menu-item-tag">Bestseller</span>
+        </div>
+        <div class="menu-price">₱165</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Café Latte</div>
+          <div class="menu-item-desc">Double espresso with steamed milk</div>
+        </div>
+        <div class="menu-price">₱160</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Macchiato</div>
+          <div class="menu-item-desc">Espresso marked with a dollop of foam</div>
+        </div>
+        <div class="menu-price">₱145</div>
+      </div>
+    </div>
+    <p class="menu-category">Filter & Pour-Over</p>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">House Drip Coffee</div>
+          <div class="menu-item-desc">Brewed fresh every hour, Benguet blend</div>
+          <span class="menu-item-tag">Free refill</span>
+        </div>
+        <div class="menu-price">₱110</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Pour-Over</div>
+          <div class="menu-item-desc">Single-origin, brewed to order · V60 method</div>
+          <span class="menu-item-tag">Seasonal origin</span>
+        </div>
+        <div class="menu-price">₱195</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Cold Brew</div>
+          <div class="menu-item-desc">18-hour cold steeped, smooth and bold</div>
+        </div>
+        <div class="menu-price">₱175</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Nitro Cold Brew</div>
+          <div class="menu-item-desc">Nitrogen-infused, creamy without cream</div>
+          <span class="menu-item-tag">New</span>
+        </div>
+        <div class="menu-price">₱210</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NON-COFFEE -->
+  <div id="tab-nonCoffee" class="menu-section">
+    <p class="menu-category">Tea & Botanicals</p>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Matcha Latte</div>
+          <div class="menu-item-desc">Ceremonial-grade matcha, steamed oat milk</div>
+          <span class="menu-item-tag">Bestseller</span>
+        </div>
+        <div class="menu-price">₱185</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Hojicha Latte</div>
+          <div class="menu-item-desc">Roasted green tea, warm and nutty</div>
+        </div>
+        <div class="menu-price">₱175</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Chamomile Honey</div>
+          <div class="menu-item-desc">Loose-leaf chamomile with local wildflower honey</div>
+        </div>
+        <div class="menu-price">₱145</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Hibiscus Cooler</div>
+          <div class="menu-item-desc">Iced hibiscus tea with lemon and mint</div>
+        </div>
+        <div class="menu-price">₱155</div>
+      </div>
+    </div>
+    <p class="menu-category">Specialty Drinks</p>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Golden Milk</div>
+          <div class="menu-item-desc">Turmeric, ginger, cinnamon, oat milk</div>
+          <span class="menu-item-tag">Anti-inflammatory</span>
+        </div>
+        <div class="menu-price">₱165</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Chocolate Malt</div>
+          <div class="menu-item-desc">House cocoa blend with malt powder and milk</div>
+        </div>
+        <div class="menu-price">₱170</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOD -->
+  <div id="tab-food" class="menu-section">
+    <p class="menu-category">Sandwiches & Toast</p>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Avocado Toast</div>
+          <div class="menu-item-desc">Sourdough, smashed avo, cherry tomatoes, everything bagel seasoning</div>
+          <span class="menu-item-tag">Vegetarian</span>
+        </div>
+        <div class="menu-price">₱215</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Egg & Cheese Toastie</div>
+          <div class="menu-item-desc">Scrambled eggs, gouda, caramelized onion on brioche</div>
+        </div>
+        <div class="menu-price">₱195</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Chicken Pesto Panini</div>
+          <div class="menu-item-desc">Grilled chicken, house pesto, rocket, parmesan</div>
+          <span class="menu-item-tag">Bestseller</span>
+        </div>
+        <div class="menu-price">₱245</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">BLT on Sourdough</div>
+          <div class="menu-item-desc">Bacon, lettuce, heirloom tomatoes, herbed mayo</div>
+        </div>
+        <div class="menu-price">₱225</div>
+      </div>
+    </div>
+    <p class="menu-category">Salads & Bowls</p>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Garden Bowl</div>
+          <div class="menu-item-desc">Quinoa, mixed greens, cucumber, hummus, lemon-tahini</div>
+          <span class="menu-item-tag">Vegan</span>
+        </div>
+        <div class="menu-price">₱255</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Caesar Salad</div>
+          <div class="menu-item-desc">Romaine, house dressing, parmesan, croutons</div>
+        </div>
+        <div class="menu-price">₱235</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASTRIES -->
+  <div id="tab-pastries" class="menu-section">
+    <p class="menu-category">Fresh-Baked Daily</p>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Butter Croissant</div>
+          <div class="menu-item-desc">Classic French-style, 72-hour laminated dough</div>
+          <span class="menu-item-tag">Must-try</span>
+        </div>
+        <div class="menu-price">₱95</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Almond Croissant</div>
+          <div class="menu-item-desc">Frangipane-filled, toasted almond flakes</div>
+        </div>
+        <div class="menu-price">₱115</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Banana Walnut Loaf</div>
+          <div class="menu-item-desc">Moist, warm, served with brown butter</div>
+        </div>
+        <div class="menu-price">₱110</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Chocolate Hazelnut Danish</div>
+          <div class="menu-item-desc">Flaky pastry, gianduja filling</div>
+          <span class="menu-item-tag">Weekend special</span>
+        </div>
+        <div class="menu-price">₱130</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Lemon Olive Oil Cake</div>
+          <div class="menu-item-desc">Light, citrusy, glazed with lemon icing</div>
+        </div>
+        <div class="menu-price">₱125</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Cheese Scone</div>
+          <div class="menu-item-desc">Sharp cheddar and herb, served warm</div>
+        </div>
+        <div class="menu-price">₱105</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2024 Brewed <span>&</span> Co. · Pasay City, Metro Manila</footer>
+</div>
+
+<script>
+  function showPage(id, linkEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    if (linkEl) linkEl.classList.add('active');
+    window.scrollTo(0, 0);
+    return false;
+  }
+
+  function showTab(id, btn) {
+    document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.menu-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+    });
+  });
+</script>
 </body>
 </html>
